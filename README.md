@@ -1,6 +1,12 @@
 # Encyclopedia
 
-[TODO. There will be project description]
+This scrip convert your static article in markdown to web-page.
+
+##Usage
+
+```sh
+python3 site_generator.py
+```
 
 # Project Goals
 
