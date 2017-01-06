@@ -1,38 +1,72 @@
 from jinja2 import Template, Environment, PackageLoader
 import json
 import os
+from markdown import markdown
 
 CONFIG_PATH = 'config.json'
 ARTICLES_PATH = 'articles'
 SITE_PATH = 'site'
 
 def load_json(json_name):
-    with open(json_names) as json_file:
-        return json.read(json_file)
+    with open(json_name) as json_file:
+        return json.load(json_file)
 
 def get_config(file_name):
-    config = load_json(config)
+    config = load_json(file_name)
     return config
 
-def built_structure_of_site(structure):
-    site_structure = []
-    for item in structure['articles']:
+def built_structure_of_site(config):
+    site_structure = {}
+    for element in config['topics']:
+        topic = element['title']
+        site_structure[topic] = []
+        for article in config['articles']:
+            if article['topic'] == element['slug']:
+                directory, file_name = os.path.split(article['source'])
+                file_name = file_name.replace('md', 'html')
+                directory = os.path.join(ARTICLES_PATH, directory)
+                link = os.path.join(directory, file_name)
+                site_structure[topic].append({
+                    'source' : os.path.join(ARTICLES_PATH,article['source']),
+                    'link'   : link,
+                    'path'   : directory,
+                    'title'  : article['title'],
+                    })
+    return site_structure
 
 
 def create_index_page(structure, template):
     if template is None:
         return
-    if not os.path.exist():
+    if not os.path.exists(SITE_PATH):
         os.makedirs(SITE_PATH)
-    with open(os.path.join(SITE_PATH,'index.html', 'w')) as index_file:
+    with open(os.path.join(SITE_PATH,'index.html'), 'w+') as index_file:
         index_file.write(template.render(title='Энциклопедия', structure = structure))
 
 
-def render_site():
-    env = Environment(loader=PackageLoader('site_generator', 'templates'))
-    index_template = environment.get_template('index.html')
-    pass
+def create_articles_page(structure, template):
+    for topic in structure:
+        for article in structure[topic]:
+            html_article = convert_md_to_html(article['source'])
+            article_path_on_site = os.path.join(SITE_PATH,article['link'])
+            directory, file_name = os.path.split(article_path_on_site)
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            with open(article_path_on_site, 'w+') as html_file:
+                html_file.write(template.render(title=article['title'],content=html_article))
+
+
+def convert_md_to_html(md_path):
+    with open(md_path) as md_file:
+        return markdown(md_file.read())
 
 if __name__ == '__main__':
-    config = load_config(CONFIG_PATH)
+    config = get_config(CONFIG_PATH)
+    env = Environment(loader=PackageLoader('site_generator', 'templates'))
+    index_template = env.get_template('index.html')
+    article_template = env.get_template('docs_page.html')
 
+    site_structure = built_structure_of_site(config)
+    create_index_page(site_structure, index_template)
+    create_articles_page(site_structure, article_template)
+    #print(site_structure)

@@ -1,11 +1,11 @@
 {% extends "main.html" %}
 {%block content%}
-    {% for title, articles in structure%}
+    {% for topic in structure%}
         <div class="col-md-3">
             <div class="text_center">
-                        <p class="label text-uppercase"><h2>{{ title }}</h2></p>
+                        <p class="label text-uppercase"><h2>{{ topic }}</h2></p>
             </div>
-            {% for article in articles%}
+            {% for article in structure[topic]%}
                 <ul>
                     <li><a class=" btn-link" href="{{ article['link'] }}"> {{ article['title'] }}</a>
                 </ul>
