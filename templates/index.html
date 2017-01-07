@@ -7,7 +7,7 @@
             </div>
             {% for article in structure[topic]%}
                 <ul>
-                    <li><a class=" btn-link" href="{{ article['link'] }}"> {{ article['title'] }}</a>
+                    <li><a class=" btn-link" href="{{ article['href'] }}"> {{ article['title'] }}</a>
                 </ul>
             {% endfor%}
         </div>

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-python3 site_generator.py config.json
+python3 site_generator.py
 git add site

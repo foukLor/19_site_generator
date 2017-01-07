@@ -11,8 +11,7 @@ python3 site_generator.py
 ### Auto-buid
 For auto-bulding to run this script:
 ```sh
-mv pre-commit ./.git/hooks/pre-commit
-chmod +x .git/hooks/pre-commit
+cp pre-commit ./.git/hooks/pre-commit
 ```
 
 # Project Goals
