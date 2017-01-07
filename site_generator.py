@@ -5,7 +5,7 @@ from markdown import markdown
 
 CONFIG_PATH = 'config.json'
 ARTICLES_PATH = 'articles'
-SITE_PATH = 'site'
+SITE_PATH = 'docs'
 
 def load_json(json_name):
     with open(json_name) as json_file:

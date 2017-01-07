@@ -1,6 +1,6 @@
 # Encyclopedia
 
-This scrip convert your static article in markdown to web-page.
+This scrip convert your static article in markdown to web-page. Example [here](https://fouklor.github.io/19_site_generator/)
 
 ##Usage
 
